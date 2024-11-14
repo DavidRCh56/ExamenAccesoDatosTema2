@@ -69,10 +69,30 @@ public class DatabaseManager {
     }
 
     private static void showUserReservations(Connection connection) {
-        // Implementar la consulta para ver el historial de reservas por usuario
+        String query = "SELECT usuario, COUNT(*) as total_reservas FROM reservas GROUP BY usuario";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                String usuario = rs.getString("usuario");
+                int totalReservas = rs.getInt("total_reservas");
+                System.out.printf("Usuario: %s, Total Reservas: %d%n", usuario, totalReservas);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private static void showAvailableSchedules(Connection connection) {
-        // Implementar la consulta para ver horarios disponibles
+        String query = "SELECT instalacion, horario FROM reservas GROUP BY instalacion, horario HAVING COUNT(*) = 0";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                String instalacion = rs.getString("instalacion");
+                String horario = rs.getString("horario");
+                System.out.printf("Instalación: %s, Horario: %s%n", instalacion, horario);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

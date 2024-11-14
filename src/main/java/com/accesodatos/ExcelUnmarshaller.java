@@ -74,14 +74,13 @@ public class ExcelUnmarshaller {
         return reservas;
     }
 
-    // Métodos auxiliares para obtener valores según tipo
     private static String getCellValueAsString(Cell cell) {
         if (cell == null) return null;
         switch (cell.getCellType()) {
             case STRING:
                 return cell.getStringCellValue();
             case NUMERIC:
-                return String.valueOf((int) cell.getNumericCellValue()); // Si es numérico, lo convierte a String
+                return String.valueOf((int) cell.getNumericCellValue());
             case BOOLEAN:
                 return String.valueOf(cell.getBooleanCellValue());
             default:
